@@ -13,21 +13,23 @@ from adafruit_debouncer import Debouncer
 # Fast-responding button, only has one purpose
 class Clicker:
   def __init__(self, pin, down, up):
+    self.pin = pin
     self.debouncer = Debouncer(pin)
     self.down_func = down
     self.up_func = up
 
   def value(self):
-    return self.debouncer.value
+    return self.pin.value
 
   def update(self):
+    global MODE_CC
     self.debouncer.update()
 
     if self.debouncer.fell:
-      self.down_func()
+      self.down_func(MODE_CC)
 
     if self.debouncer.rose:
-      self.up_func()
+      self.up_func(MODE_CC)
 
 
 # Slower, but multi-functional button
@@ -37,6 +39,7 @@ class Holder:
   def __init__(self, pin, short_down, short_up, long_down, long_up):
     # Hold for more than 400ms and it counts as a long press
     self.long_duration = 400
+    self.pin = pin
     self.debouncer = Debouncer(pin)
     self.short_down = short_down
     self.short_up = short_up
@@ -44,12 +47,12 @@ class Holder:
     self.long_up = long_up
 
     self.during_long = False
-    pass
 
   def value(self):
-    return self.debouncer.value
+    return self.pin.value
 
   def update(self):
+    global MODE_CC
     timestamp = supervisor.ticks_ms()
 
     self.debouncer.update()
@@ -62,16 +65,16 @@ class Holder:
       if not self.during_long:
         if timestamp - self.downtime >= self.long_duration:
           self.during_long = True
-          self.long_down()
+          self.long_down(MODE_CC)
 
     if self.debouncer.rose:
 
       if not self.during_long:
-        self.short_down()
+        self.short_down(MODE_CC)
         time.sleep(0.02)
-        self.short_up()
+        self.short_up(MODE_CC)
       else:
-        self.long_up()
+        self.long_up(MODE_CC)
 
       self.during_long = False
 
@@ -95,16 +98,22 @@ def setup_pin(gp):
 
 
 def midi_down(number):
-  if MODE_CC:
-    return lambda: transport.send(ControlChange(number, 127))
-  else:
-    return lambda: transport.send(NoteOn(number, 127))
+  def eventfunc(do_cc):
+    if do_cc:
+      transport.send(ControlChange(number, 127))
+    else:
+      transport.send(NoteOn(number, 127))
+
+  return eventfunc
 
 def midi_up(number):
-  if MODE_CC:
-    return lambda: transport.send(ControlChange(number, 0))
-  else:
-    return lambda: transport.send(NoteOn(number, 0))
+  def eventfunc(do_cc):
+    if do_cc:
+      transport.send(ControlChange(number, 0))
+    else:
+      transport.send(NoteOn(number, 0))
+
+  return eventfunc
 
 
 BTNS = [
@@ -130,7 +139,6 @@ BTNS = [
 # If any of the buttons is pressed on boot, we send notes
 # If not, we send control events
 for btn in BTNS:
-  btn.update()
   if btn.value() == 0:
     MODE_CC = False
 
