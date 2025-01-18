@@ -7,7 +7,7 @@ Four buttons are connected to GP10, GP11, GP12, GP13, connecting each to GND.
 ![A very simple little stomp box](stompi.jpg)
 
 ## Installing
-Install CircuitPython 8.x on a raspi pico (with or without W)
+Install CircuitPython 9.x (tested with 9.2.3) on a raspi pico (with or without W)
 
 Copy `code.py` and `boot.py` and `lib/` to your board and reset it
 
