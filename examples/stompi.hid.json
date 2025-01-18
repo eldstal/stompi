@@ -1,0 +1,13 @@
+{
+  "device": "hid",
+
+  "buttons": [
+
+    { "gpio": 10, "action": "double", "short": { "click": 0 }, "long": { "text": "Hey, hello, Let's go!" } },
+    { "gpio": 11, "action": "double", "short": { "key": "q" }, "long": { "keycode": 52 } },
+    { "gpio": 12, "action": "single", "short": { "click": 1 } },
+    { "gpio": 13, "action": "double", "short": { "key": "a" }, "long": { "key": "B" } }
+
+  ]
+
+}

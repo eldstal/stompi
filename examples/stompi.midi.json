@@ -1,0 +1,13 @@
+{
+  "device": "midi",
+
+  "buttons": [
+
+    { "gpio": 10, "action": "double", "short": { "cc": 50 }, "long": { "note": 60 } },
+    { "gpio": 11, "action": "double", "short": { "cc": 51 }, "long": { "note": 61 } },
+    { "gpio": 12, "action": "single", "short": { "note": 52 } },
+    { "gpio": 13, "action": "double", "short": { "cc": 53 }, "long": { "note": 63 } }
+
+  ]
+
+}
