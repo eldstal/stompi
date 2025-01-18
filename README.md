@@ -62,6 +62,8 @@ Note that this will suffer from some keyboard layout weirdness.
 { "text": "Hey hey, let's go!" }
 
 Numeric keycode (ask your parents) to press/release
+Reference:
+https://docs.circuitpython.org/projects/hid/en/latest/api.html#adafruit_hid.keycode.Keycode
 { "keycode": 230 }
 ```
 

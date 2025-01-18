@@ -1,0 +1,13 @@
+{
+  "device": "hid",
+
+  "buttons": [
+
+    { "gpio": 10, "action": "double", "short": { "keycode": 82 }, "long": { "key": " " } },
+    { "gpio": 11, "action": "double", "short": { "key": " " },     "long": { "key": " " } },
+    { "gpio": 12, "action": "double", "short": { "keycode": 81 }, "long": { "keycode": 80 } },
+    { "gpio": 13, "action": "double", "short": { "keycode": 40 },  "long": { "keycode": 79 } }
+
+  ]
+
+}
